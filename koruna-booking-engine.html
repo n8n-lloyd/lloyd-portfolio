@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koruna Assist — Booking Engine SOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:     #0B1628;
+    --navy2:    #13213A;
+    --navy3:    #1C2E4A;
+    --cream:    #F0EDE6;
+    --gold:     #C8973A;
+    --gold-dim: #A07828;
+    --gold-bg:  rgba(200,151,58,0.10);
+    --teal:     #1E7A8C;
+    --teal-bg:  rgba(30,122,140,0.12);
+    --slate:    #8A9BB5;
+    --white:    #FFFFFF;
+    --text:     #E8E4DC;
+    --muted:    #6B7A92;
+    --border:   rgba(138,155,181,0.18);
+    --red-bg:   rgba(192,57,43,0.12);
+    --red:      #E05C4B;
+    --green-bg: rgba(39,103,73,0.14);
+    --green:    #3CB371;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(11,22,40,0.90);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-brand::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--slate);
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .nav-links a:hover { color: var(--white); background: var(--border); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 80px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 40%, rgba(30,122,140,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 70%, rgba(200,151,58,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(138,155,181,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(138,155,181,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--gold);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(42px, 6vw, 80px);
+    line-height: 1.02;
+    letter-spacing: -1.5px;
+    color: var(--white);
+    max-width: 800px;
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--slate);
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 56px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .hero-meta-item span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .hero-url {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal);
+    background: var(--teal-bg);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(30,122,140,0.3);
+    text-decoration: none;
+  }
+  .hero-url::before { content: '⇢'; }
+  .scroll-cue {
+    position: absolute;
+    bottom: 36px;
+    left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.8px;
+  }
+  .scroll-cue::before {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, var(--muted));
+    display: block;
+  }
+
+  /* ── PANEL (generic full section) ── */
+  .panel {
+    padding: 100px 80px;
+    border-top: 1px solid var(--border);
+  }
+  .panel-inner { max-width: 1040px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 0 0 24px; height: 1px; background: var(--gold); }
+  .panel h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.8px;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+  .panel-intro {
+    font-size: 16px;
+    color: var(--slate);
+    max-width: 640px;
+    line-height: 1.65;
+    margin-bottom: 56px;
+  }
+
+  /* ── SUMMARY SPLIT ── */
+  .summary-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .summary-card {
+    border-radius: 12px;
+    padding: 28px 32px;
+    border: 1px solid var(--border);
+  }
+  .summary-card.problem { background: var(--red-bg); border-color: rgba(224,92,75,0.25); }
+  .summary-card.solution { background: var(--green-bg); border-color: rgba(60,179,113,0.25); }
+  .summary-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .problem .summary-card-label { color: var(--red); }
+  .solution .summary-card-label { color: var(--green); }
+  .summary-card p { font-size: 14px; line-height: 1.65; color: var(--text); }
+  .summary-card strong { color: var(--white); font-weight: 600; }
+
+  .score-bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-top: 40px;
+    padding: 32px 40px;
+    background: var(--navy2);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+  .score-item { text-align: center; }
+  .score-item label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .score-item.before .score-num { color: var(--gold); }
+  .score-item.after .score-num { color: var(--green); }
+  .score-item sub {
+    font-size: 18px;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+  }
+  .score-item p { font-size: 12px; color: var(--slate); margin-top: 6px; }
+  .score-arrow {
+    font-size: 28px;
+    color: var(--teal);
+    text-align: center;
+  }
+
+  /* ── PROBLEMS ── */
+  .problem-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .problem-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 4px 1fr;
+  }
+  .problem-card-accent { background: var(--red); }
+  .problem-card-body { padding: 28px 32px; }
+  .problem-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .problem-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--red);
+    background: var(--red-bg);
+    border: 1px solid rgba(224,92,75,0.3);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .problem-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .problem-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .prob-sol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 18px;
+  }
+  .prob-col, .sol-col {
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .prob-col { background: var(--red-bg); border: 1px solid rgba(224,92,75,0.2); }
+  .sol-col { background: var(--green-bg); border: 1px solid rgba(60,179,113,0.2); }
+  .prob-col strong, .sol-col strong {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .prob-col strong { color: var(--red); }
+  .sol-col strong { color: var(--green); }
+
+  .quote-pull {
+    margin: 12px 0 0;
+    padding: 12px 16px;
+    border-left: 2px solid var(--muted);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-section { background: var(--navy); }
+  .flow-container {
+    position: relative;
+    padding: 40px 0 20px;
+  }
+  .flow-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0;
+    position: relative;
+  }
+  .flow-steps::before {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 36px;
+    right: 36px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    z-index: 0;
+  }
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    padding: 0 8px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .flow-step.visible { opacity: 1; transform: translateY(0); }
+  .flow-dot {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--navy2);
+    border: 2px solid var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--teal);
+    margin-bottom: 18px;
+    position: relative;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .flow-dot::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(30,122,140,0.2);
+  }
+  .flow-step.active .flow-dot {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-bg);
+    box-shadow: 0 0 0 8px rgba(200,151,58,0.08), 0 0 24px rgba(200,151,58,0.2);
+  }
+  .flow-step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .flow-step-desc {
+    font-size: 11px;
+    color: var(--slate);
+    text-align: center;
+    line-height: 1.5;
+    max-width: 120px;
+  }
+
+  .flow-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    margin-top: 48px;
+  }
+  .flow-detail {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 16px;
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+  .flow-detail:hover { border-color: var(--teal); }
+  .flow-detail-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--teal);
+    line-height: 1;
+    margin-bottom: 8px;
+    opacity: 0.5;
+  }
+  .flow-detail h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .flow-detail p { font-size: 11.5px; color: var(--slate); line-height: 1.5; }
+
+  /* ── CRM MAPPING ── */
+  .crm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .crm-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .crm-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+  .crm-field-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: var(--teal-bg);
+    border: 1px solid rgba(30,122,140,0.3);
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 12px;
+    font-family: 'Inter', monospace;
+  }
+  .crm-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .crm-card p { font-size: 13px; color: var(--slate); line-height: 1.6; }
+
+  /* ── RACI ── */
+  .raci-table-wrap { overflow-x: auto; }
+  .raci-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .raci-table th {
+    background: var(--navy3);
+    color: var(--slate);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .raci-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .raci-table tr:last-child td { border-bottom: none; }
+  .raci-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .raci-table td:first-child { font-weight: 500; color: var(--white); }
+  .raci-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+  }
+  .raci-r { background: rgba(200,151,58,0.15); color: var(--gold); border: 1px solid rgba(200,151,58,0.3); }
+  .raci-a { background: rgba(30,122,140,0.15); color: var(--teal); border: 1px solid rgba(30,122,140,0.3); }
+  .raci-c { background: rgba(138,155,181,0.10); color: var(--slate); border: 1px solid rgba(138,155,181,0.2); }
+  .raci-i { background: rgba(60,179,113,0.10); color: var(--green); border: 1px solid rgba(60,179,113,0.25); }
+  .raci-auto { background: rgba(200,151,58,0.08); color: var(--gold-dim); border: 1px solid rgba(200,151,58,0.15); font-size: 10px; }
+
+  /* ── DEPLOYMENT ── */
+  .deploy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .deploy-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 30px;
+    transition: border-color 0.3s;
+  }
+  .deploy-card:hover { border-color: var(--teal); }
+  .deploy-card.active { border-color: var(--gold); background: var(--gold-bg); }
+  .deploy-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .deploy-card.active .deploy-label { color: var(--gold); }
+  .deploy-card:not(.active) .deploy-label { color: var(--teal); }
+  .deploy-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .deploy-card p { font-size: 13.5px; color: var(--slate); line-height: 1.6; }
+  .deploy-badge {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .deploy-card.active .deploy-badge { background: rgba(200,151,58,0.15); color: var(--gold); border: 1px solid rgba(200,151,58,0.3); }
+  .deploy-card:not(.active) .deploy-badge { background: var(--teal-bg); color: var(--teal); border: 1px solid rgba(30,122,140,0.3); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin: 28px 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .callout-gold { background: var(--gold-bg); border: 1px solid rgba(200,151,58,0.25); }
+  .callout-teal { background: var(--teal-bg); border: 1px solid rgba(30,122,140,0.25); }
+  .callout-green { background: var(--green-bg); border: 1px solid rgba(60,179,113,0.25); }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .callout-text strong { display: block; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .callout-text { color: var(--text); }
+
+  /* ── STEPS ── */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .step-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--gold);
+    background: var(--gold-bg);
+    border: 1px solid rgba(200,151,58,0.3);
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-text { font-size: 14.5px; color: var(--text); line-height: 1.6; }
+  .step-text strong { color: var(--white); font-weight: 600; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 80px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .f-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+  }
+  footer .f-meta {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* ── PULSE ANIMATION ── */
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200,151,58,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(200,151,58,0); }
+  }
+  .flow-step.active .flow-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.2,0,0,1), transform 0.6s cubic-bezier(0.2,0,0,1);
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    .hero { padding: 90px 28px 60px; }
+    .panel { padding: 64px 28px; }
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .summary-split, .deploy-grid { grid-template-columns: 1fr; }
+    .crm-grid { grid-template-columns: 1fr 1fr; }
+    .prob-sol { grid-template-columns: 1fr; }
+    .flow-detail-grid { grid-template-columns: repeat(4, 1fr); }
+    .flow-steps::before { display: none; }
+    footer { padding: 32px 28px; }
+  }
+  @media (max-width: 600px) {
+    .crm-grid { grid-template-columns: 1fr; }
+    .flow-detail-grid { grid-template-columns: repeat(2, 1fr); }
+    .score-bar { grid-template-columns: 1fr; gap: 12px; }
+    .score-arrow { transform: rotate(90deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow-step.active .flow-dot { animation: none; }
+    .reveal, .flow-step { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Koruna Assist — Booking Engine SOP</div>
+  <ul class="nav-links">
+    <li><a href="#problems">Problems</a></li>
+    <li><a href="#flow">How It Works</a></li>
+    <li><a href="#crm">CRM Mapping</a></li>
+    <li><a href="#raci">RACI</a></li>
+    <li><a href="#deploy">Deployment</a></li>
+    <li><a href="#nextsteps">Next Steps</a></li>
+    <li><a href="index.html" style="color:var(--gold);border:1px solid rgba(200,151,58,0.3);padding:5px 14px;border-radius:6px;">← Portfolio</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-eyebrow">Booking Engine SOP · Internal Briefing</div>
+  <h1>Stop losing leads<br>between <em>the form</em><br>and <em>the call.</em></h1>
+  <p class="hero-sub">A conversational AI widget that qualifies prospects, populates the CRM, and books the discovery call automatically — so Ali closes, and the system does everything else.</p>
+  <a class="hero-url" href="https://koruna-assist.vibepreview.com" target="_blank">koruna-assist.vibepreview.com</a>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><label>Prepared by</label><span>Lloyd Lisen</span></div>
+    <div class="hero-meta-item"><label>Platforms</label><span>GoHighLevel (CX365) · WordPress</span></div>
+    <div class="hero-meta-item"><label>Status</label><span>Live — Ready for Approval</span></div>
+    <div class="hero-meta-item"><label>Classification</label><span>Confidential · Internal Use</span></div>
+  </div>
+  <div class="scroll-cue">Scroll to review</div>
+</section>
+
+<!-- ═══ EXECUTIVE SUMMARY ═══ -->
+<section class="panel" id="summary">
+  <div class="panel-inner">
+    <div class="section-label reveal">Executive Summary</div>
+    <h2 class="reveal">The big picture in 60 seconds.</h2>
+    <p class="panel-intro reveal">Koruna Assist has a lead flow problem and an admin burden problem. This solution fixes both — using tools already in the CX365 account, without rebuilding anything.</p>
+
+    <div class="summary-split reveal">
+      <div class="summary-card problem">
+        <div class="summary-card-label">⚠ The Core Problem</div>
+        <p>Leads entering through Meta Instant Forms must fill in their details a <strong>second time</strong> in a GHL form — doubling friction and increasing drop-off. Meanwhile, <strong>Ali is handling qualification and scheduling</strong> tasks she doesn't get paid for, eating into her closing capacity. And any lead arriving after hours simply goes cold.</p>
+      </div>
+      <div class="summary-card solution">
+        <div class="summary-card-label">✓ The Solution</div>
+        <p>A single conversational widget handles the entire journey: visitor arrives, <strong>AI qualifies through natural chat</strong>, CRM fields are populated automatically, and the discovery call is booked — all without leaving the page. <strong>Ali only enters when a call is already booked.</strong></p>
+      </div>
+    </div>
+
+    <div class="score-bar reveal">
+      <div class="score-item before">
+        <label>System Health Today</label>
+        <div class="score-num">6<sub>/10</sub></div>
+        <p>Foundation solid, execution gaps</p>
+      </div>
+      <div class="score-arrow">→</div>
+      <div class="score-item after">
+        <label>Projected With Booking Engine</label>
+        <div class="score-num">9<sub>/10</sub></div>
+        <p>Execution gap closed, no rebuild</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEMS ═══ -->
+<section class="panel" id="problems">
+  <div class="panel-inner">
+    <div class="section-label reveal">Problems Solved</div>
+    <h2 class="reveal">Three operational gaps, one fix.</h2>
+    <p class="panel-intro reveal">Each of these issues was identified in the GHL–WordPress systems audit and the SOP session with Ali.</p>
+
+    <div class="problem-grid">
+
+      <div class="problem-card reveal">
+        <div class="problem-card-accent"></div>
+        <div class="problem-card-body">
+          <div class="problem-meta">
+            <span class="problem-num">#3</span>
+            <span class="problem-badge">Critical</span>
+          </div>
+          <h3>Double Form Fill — Friction at the Highest-Intent Moment</h3>
+          <div class="quote-pull">"The potential lead will come here and then they have to fill out a form again — it's not ideal." — Ali</div>
+          <div class="prob-sol">
+            <div class="prob-col">
+              <strong>Root Cause</strong>
+              Meta Instant Forms were built as a workaround because the website couldn't connect directly to GHL. This forced leads to fill in details twice, with inconsistent field mapping between platforms — creating drop-off and dirty data.
+            </div>
+            <div class="sol-col">
+              <strong>How This Fixes It</strong>
+              The chat widget replaces both forms with a single conversational flow. Lead data is captured once, mapped directly to GHL contact fields, and passed through automatically — no double entry, no mapping errors.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card reveal">
+        <div class="problem-card-accent"></div>
+        <div class="problem-card-body">
+          <div class="problem-meta">
+            <span class="problem-num">#9</span>
+            <span class="problem-badge">Structural</span>
+          </div>
+          <h3>Ali's Unpaid Admin — Role-Task Mismatch</h3>
+          <div class="quote-pull">"I get paid per sale as a closer… I don't get paid for admin. I've made it as best as possible with very limited time." — Ali</div>
+          <div class="prob-sol">
+            <div class="prob-col">
+              <strong>Root Cause</strong>
+              Ali's compensation is per-sale. Every hour spent on CRM admin, scheduling, and qualification back-and-forth is uncompensated time. This reduces her closing capacity and creates burnout risk.
+            </div>
+            <div class="sol-col">
+              <strong>How This Fixes It</strong>
+              The AI handles initial response, qualification, scheduling, and reminders. Ali's role becomes exclusively: booked call → discovery → close. Lloyd owns all systems and automation from here.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card reveal">
+        <div class="problem-card-accent"></div>
+        <div class="problem-card-body">
+          <div class="problem-meta">
+            <span class="problem-num">Gap</span>
+            <span class="problem-badge">After-Hours</span>
+          </div>
+          <h3>After-Hours Response — Leads Going Cold</h3>
+          <div class="prob-sol">
+            <div class="prob-col">
+              <strong>Root Cause</strong>
+              Static forms and manual follow-up mean leads arriving outside business hours — including broker principals who research after work — receive no response until the next day. Research shows leads contacted after 30 minutes convert at 8× lower rates.
+            </div>
+            <div class="sol-col">
+              <strong>How This Fixes It</strong>
+              The widget responds within 1 second, 24/7. It qualifies, engages, and books the call regardless of time of day. Broker principals researching at 9pm are met with an immediate, intelligent response.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FLOW ═══ -->
+<section class="panel flow-section" id="flow">
+  <div class="panel-inner">
+    <div class="section-label reveal">How It Works</div>
+    <h2 class="reveal">Seven steps, zero forms.</h2>
+    <p class="panel-intro reveal">The widget guides visitors from first contact to booked call through conversation — not form fields. Click any step to explore.</p>
+
+    <div class="flow-container reveal" id="flowContainer">
+      <div class="flow-steps" id="flowSteps">
+        <div class="flow-step" data-step="0">
+          <div class="flow-dot">1</div>
+          <div class="flow-step-title">Visitor Arrives</div>
+          <div class="flow-step-desc">Widget opens, AI greets instantly</div>
+        </div>
+        <div class="flow-step" data-step="1">
+          <div class="flow-dot">2</div>
+          <div class="flow-step-title">AI Asks Questions</div>
+          <div class="flow-step-desc">Business type, team size, pain points</div>
+        </div>
+        <div class="flow-step" data-step="2">
+          <div class="flow-dot">3</div>
+          <div class="flow-step-title">Qualification</div>
+          <div class="flow-step-desc">Fit vs. no-fit assessed</div>
+        </div>
+        <div class="flow-step" data-step="3">
+          <div class="flow-dot">4</div>
+          <div class="flow-step-title">CRM Populated</div>
+          <div class="flow-step-desc">All answers saved as GHL fields</div>
+        </div>
+        <div class="flow-step" data-step="4">
+          <div class="flow-dot">5</div>
+          <div class="flow-step-title">Calendar Booking</div>
+          <div class="flow-step-desc">Embedded calendar, booked in-chat</div>
+        </div>
+        <div class="flow-step" data-step="5">
+          <div class="flow-dot">6</div>
+          <div class="flow-step-title">Auto Follow-up</div>
+          <div class="flow-step-desc">Confirmations, reminders, pipeline</div>
+        </div>
+        <div class="flow-step" data-step="6">
+          <div class="flow-dot">7</div>
+          <div class="flow-step-title">Ali Enters</div>
+          <div class="flow-step-desc">Discovery call → close</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-detail-grid reveal">
+      <div class="flow-detail">
+        <div class="flow-detail-num">01</div>
+        <h4>Visitor Arrives</h4>
+        <p>Widget opens automatically or on click. AI greets immediately — no form shown upfront.</p>
+      </div>
+      <div class="flow-detail">
+        <div class="flow-detail-num">02</div>
+        <h4>AI Conversation</h4>
+        <p>Asks: business type, team size, admin hours lost, main pain, service interest.</p>
+      </div>
+      <div class="flow-detail">
+        <div class="flow-detail-num">03</div>
+        <h4>Fit Assessment</h4>
+        <p>Qualified leads move to booking. Non-qualified leads are captured for nurture — no time wasted.</p>
+      </div>
+      <div class="flow-detail">
+        <div class="flow-detail-num">04</div>
+        <h4>CRM Population</h4>
+        <p>Every answer maps to a GHL contact field — industry, team size, problem, hours lost, interest.</p>
+      </div>
+      <div class="flow-detail">
+        <div class="flow-detail-num">05</div>
+        <h4>In-Chat Booking</h4>
+        <p>Embedded calendar appears in the conversation. Date, time, confirmation — without leaving the page.</p>
+      </div>
+      <div class="flow-detail">
+        <div class="flow-detail-num">06</div>
+        <h4>Automated Sequences</h4>
+        <p>Confirmation email + SMS sent. Reminder sequence triggered. Lead tagged and placed in pipeline.</p>
+      </div>
+      <div class="flow-detail">
+        <div class="flow-detail-num">07</div>
+        <h4>Ali's Turn</h4>
+        <p>Booked call notification sent. Ali's only job: run the discovery call and close the sale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CRM MAPPING ═══ -->
+<section class="panel" id="crm">
+  <div class="panel-inner">
+    <div class="section-label reveal">CRM Field Mapping</div>
+    <h2 class="reveal">One conversation. Six fields. No second form.</h2>
+    <p class="panel-intro reveal">Every answer captured during the chat is stored as a structured GHL field — available immediately for pipeline management, lead scoring, and segmentation.</p>
+
+    <div class="crm-grid reveal">
+      <div class="crm-card">
+        <div class="crm-field-tag">Industry</div>
+        <h4>Vertical</h4>
+        <p>Mortgage broker, financial planner, tradie, or professional services — tagged on the contact immediately for downstream segmentation and correct pipeline routing.</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-field-tag">Team Size</div>
+        <h4>Company Scale</h4>
+        <p>Triggers size-based segmentation. Populates the lead scoring model (2–20 staff = ICP match +10 points) without any manual tagging.</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-field-tag">Problem</div>
+        <h4>Main Pain Point</h4>
+        <p>Stored as the "Problem" field. Informs Ali's discovery call approach and pre-populates the objection preparation notes for the call.</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-field-tag">Hours Lost</div>
+        <h4>Admin Hours / Week</h4>
+        <p>Used in ROI framing during the proposal. Gives Ali a concrete number to anchor the value conversation: "You told us you're losing X hours a week…"</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-field-tag">Service Interest</div>
+        <h4>VA / EA / Loan Processor</h4>
+        <p>Routes the lead to the correct pipeline stage and offer sequence. Flags whether this is a Loan Processor, VA, or EA conversation before the call begins.</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-field-tag">Lead Source</div>
+        <h4>Attribution Tag</h4>
+        <p>Automatically tagged (Facebook, Website, LinkedIn, etc.). Feeds UTM attribution — critical for confirming which channels produce qualified leads.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ RACI ═══ -->
+<section class="panel" id="raci">
+  <div class="panel-inner">
+    <div class="section-label reveal">Role Clarity</div>
+    <h2 class="reveal">Who owns what.</h2>
+    <p class="panel-intro reveal">Once the booking engine is live, this is the formalised role split. Ali should never need to touch the back-end again.</p>
+
+    <div class="callout callout-gold reveal">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-text"><strong>Formalised Role Split</strong>Ali owns calls and conversions. Lloyd owns systems and automation. Petra and Jess own platform access and approvals. This boundary must hold — every hour Ali spends in the back-end is a sale she's not making.</div>
+    </div>
+
+    <div class="raci-table-wrap reveal">
+      <table class="raci-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Responsible</th>
+            <th>Accountable</th>
+            <th>Consulted</th>
+            <th>Informed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CRM, automation &amp; workflows</td>
+            <td><span class="raci-pill raci-r">Lloyd</span></td>
+            <td><span class="raci-pill raci-a">Petra / Jess</span></td>
+            <td><span class="raci-pill raci-c">Ali</span></td>
+            <td><span class="raci-pill raci-i">All</span></td>
+          </tr>
+          <tr>
+            <td>Inbound qualification</td>
+            <td><span class="raci-pill raci-auto">AI Widget</span></td>
+            <td><span class="raci-pill raci-a">Lloyd</span></td>
+            <td>—</td>
+            <td><span class="raci-pill raci-i">All</span></td>
+          </tr>
+          <tr>
+            <td>Discovery calls &amp; closing</td>
+            <td><span class="raci-pill raci-r">Ali</span></td>
+            <td><span class="raci-pill raci-a">Ali</span></td>
+            <td><span class="raci-pill raci-c">Lloyd</span></td>
+            <td><span class="raci-pill raci-i">Petra</span></td>
+          </tr>
+          <tr>
+            <td>Platform access &amp; approvals</td>
+            <td><span class="raci-pill raci-r">Petra / Jess</span></td>
+            <td><span class="raci-pill raci-a">Petra</span></td>
+            <td><span class="raci-pill raci-c">Lloyd</span></td>
+            <td><span class="raci-pill raci-i">Ali</span></td>
+          </tr>
+          <tr>
+            <td>Calendar &amp; reminder sequences</td>
+            <td><span class="raci-pill raci-auto">GHL Automation</span></td>
+            <td><span class="raci-pill raci-a">Lloyd</span></td>
+            <td><span class="raci-pill raci-c">Ali</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>AI response content &amp; knowledge base</td>
+            <td><span class="raci-pill raci-r">Lloyd</span></td>
+            <td><span class="raci-pill raci-a">Petra</span></td>
+            <td><span class="raci-pill raci-c">Ali</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEPLOYMENT ═══ -->
+<section class="panel" id="deploy">
+  <div class="panel-inner">
+    <div class="section-label reveal">Deployment Options</div>
+    <h2 class="reveal">Two ways to go live.</h2>
+    <p class="panel-intro reveal">Option A is live right now and can be activated today. Option B embeds the widget directly into the website.</p>
+
+    <div class="deploy-grid reveal">
+      <div class="deploy-card active">
+        <div class="deploy-label">Option A — Recommended First</div>
+        <h3>Standalone Landing Page</h3>
+        <p>The widget is live now at <strong>koruna-assist.vibepreview.com</strong>. Link all active Meta, LinkedIn, and Google ad campaigns here instead of the current double-form flow. No WordPress changes required.</p>
+        <span class="deploy-badge">⚡ Activate Today</span>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-label">Option B — Phase 2</div>
+        <h3>Embedded on WordPress Site</h3>
+        <p>Bundle the widget as a JavaScript snippet for the WordPress footer, or use GoHighLevel's native chat embed code directly from the CX365 account. Keeps configuration centralised in GHL.</p>
+        <span class="deploy-badge">After Option A is confirmed</span>
+      </div>
+    </div>
+
+    <div class="callout callout-teal reveal">
+      <div class="callout-icon">→</div>
+      <div class="callout-text"><strong>Sequencing Rule</strong>Link ad campaigns to the standalone page first. Confirm the end-to-end flow works (widget → CRM contact created → booking confirmed → Ali notified). Only then embed on WordPress.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NEXT STEPS ═══ -->
+<section class="panel" id="nextsteps">
+  <div class="panel-inner">
+    <div class="section-label reveal">Next Steps</div>
+    <h2 class="reveal">Six actions to go live.</h2>
+    <p class="panel-intro reveal">In priority order. Steps 1–3 can be completed this week with no new tools or budget.</p>
+
+    <div class="steps-list reveal">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Link all active Meta and LinkedIn ad campaigns to the standalone landing page.</strong> Eliminates double-form friction immediately. No WordPress changes required.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Confirm GHL calendar is connected and synced to Ali's availability</strong> inside the widget — test with a live booking end-to-end.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Populate the GHL Knowledge Base</strong> with Koruna Assist services, verticals, FAQs, and ISO 27001 positioning — so the AI responds accurately to pre-call questions.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Test end-to-end:</strong> submit a test entry through the widget and confirm contact creation, tags, pipeline placement, and confirmation emails are working correctly in GHL.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-text"><strong>Decide WordPress embed method</strong> — JavaScript snippet or GHL native embed — and implement once the standalone flow is confirmed working.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">6</div>
+        <div class="step-text"><strong>Present to Petra and Ali for approval</strong> to proceed with full deployment and ad campaign remapping.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-green reveal" style="margin-top:40px">
+      <div class="callout-icon">✓</div>
+      <div class="callout-text"><strong>The bottom line</strong>Nothing here requires new software, a website rebuild, or extra headcount. The system is connected. The widget is live. Fixing the form mapping and switching on the booking engine is what turns a 6/10 system into a 9/10 revenue engine.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">Koruna Assist Back Office Solutions</div>
+  <div class="f-meta">Booking Engine SOP · Prepared by Lloyd Lisen · Confidential · Internal Use</div>
+</footer>
+
+<script>
+  // ── Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ── Flow step animation
+  const flowSteps = document.querySelectorAll('.flow-step');
+  let activeStep = 0;
+
+  function activateStep(idx) {
+    flowSteps.forEach((s, i) => {
+      s.classList.remove('active');
+      if (i <= idx) s.classList.add('visible');
+    });
+    flowSteps[idx].classList.add('active');
+    activeStep = idx;
+  }
+
+  // Cascade in on load
+  flowSteps.forEach((step, i) => {
+    step.style.transitionDelay = `${i * 0.1}s`;
+  });
+
+  const flowObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      setTimeout(() => {
+        flowSteps.forEach((s, i) => {
+          setTimeout(() => s.classList.add('visible'), i * 120);
+        });
+        setTimeout(() => activateStep(0), 100);
+        flowObserver.unobserve(entries[0].target);
+        // Auto-advance
+        let i = 0;
+        const interval = setInterval(() => {
+          i = (i + 1) % flowSteps.length;
+          activateStep(i);
+          if (i === flowSteps.length - 1) clearInterval(interval);
+        }, 1200);
+      }, 300);
+    }
+  }, { threshold: 0.3 });
+  flowObserver.observe(document.getElementById('flowSteps'));
+
+  // Manual click
+  flowSteps.forEach((step, idx) => {
+    step.addEventListener('click', () => activateStep(idx));
+    step.style.cursor = 'pointer';
+  });
+</script>
+
+</body>
+</html>
